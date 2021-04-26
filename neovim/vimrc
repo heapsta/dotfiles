@@ -1,0 +1,252 @@
+set encoding=utf-8
+set fileencoding=utf-8
+set fileencodings=utf-8
+set backspace=indent,eol,start
+set tabstop=2
+set softtabstop=0
+set shiftwidth=2
+set expandtab
+set relativenumber
+set nowrap
+syntax enable
+set hidden
+set ignorecase
+set smartcase
+set hlsearch
+set incsearch
+set mouse=a
+let no_buffer_menu=1
+
+" SignColumn to same color as numbers
+au VimEnter * highlight clear SignColumn
+
+" Adding Column on 80 character
+" set colorcolumn=80
+" au VimEnter * highlight ColorColumn ctermbg=0 guibg=lightgrey
+
+nnoremap <SPACE> <Nop>
+let mapleader = " "
+
+call plug#begin('~/.vim/plugged')
+Plug 'junegunn/vim-easy-align'
+Plug 'https://github.com/junegunn/vim-github-dashboard.git'
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'ryanoasis/vim-devicons'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'scrooloose/nerdtree-project-plugin'
+Plug 'PhilRunninger/nerdtree-buffer-ops'
+Plug 'PhilRunninger/nerdtree-visual-selection'
+Plug 'fatih/vim-go', { 'tag': '*' }
+Plug 'nsf/gocode', { 'tag': 'v.20150303', 'rtp': 'vim' }
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
+Plug 'altercation/vim-colors-solarized'
+Plug 'morhetz/gruvbox'
+Plug 'tpope/vim-surround'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'jiangmiao/auto-pairs'
+Plug 'elzr/vim-json'
+Plug 'trevordmiller/nova-vim'
+Plug 'dracula/vim', { 'name': 'dracula' }
+Plug 'rafi/awesome-vim-colorschemes'
+Plug 'tpope/vim-fugitive'
+Plug 'z0mbix/vim-shfmt', { 'for': 'sh' }
+Plug 'doums/darcula'
+Plug 'Yggdroot/indentLine'
+Plug 'vim-ruby/vim-ruby'
+Plug 'ruby-formatter/rufo-vim'
+Plug 'preservim/tagbar'
+Plug 'letorbi/vim-colors-modern-borland'
+Plug 'jnurmine/Zenburn'
+
+
+" Initialize plugin system
+call plug#end()
+
+" -------------------------------------------------------------------------------------------------
+" coc.nvim default settings
+" -------------------------------------------------------------------------------------------------
+
+" if hidden is not set, TextEdit might fail.
+set hidden
+" Better display for messages
+set cmdheight=2
+" Smaller updatetime for CursorHold & CursorHoldI
+set updatetime=300
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
+" always show signcolumns
+set signcolumn=yes
+
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use `[c` and `]c` to navigate diagnostics
+nmap <silent> [c <Plug>(coc-diagnostic-prev)
+nmap <silent> ]c <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use U to show documentation in preview window
+nnoremap <silent> U :call <SID>show_documentation()<CR>
+
+" Remap for rename current word
+nmap <leader>rn <Plug>(coc-rename)
+
+" Remap for format selected region
+vmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+" Show all diagnostics
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions
+nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+" Show commands
+nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document
+nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols
+nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list
+nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+
+" disable vim-go :GoDef short cut (gd)
+" this is handled by LanguageClient [LC]
+let g:go_def_mapping_enabled = 0
+
+nmap <C-p> :FZF<CR>
+
+
+" Theme
+" set termguicolors
+" let g:solarized_termtrans = 1
+" let g:solarized_termcolors=256
+" set background=light
+colorscheme gruvbox
+
+
+"set background=dark
+"colorscheme solarized8
+"" let g:solarized_termcolors=256
+"nmap LT :set background=light<CR>
+"nmap DT :set background=dark<CR>
+
+" Shformatter Config
+if executable('shfmt')
+  let &l:formatprg='shfmt -i ' . &l:shiftwidth . ' -ln posix -sr -ci -s'
+endif
+
+let g:shfmt_extra_args = '-i 2'
+" let g:shfmt_fmt_on_save = 1
+
+" Enable rufo (RUby FOrmat)
+let g:rufo_auto_formatting = 1
+
+" NERDTree
+nnoremap <C-t> :NERDTreeToggle<CR>
+
+" set guifont=Monospace\ 13
+let NERDTreeMapOpenInTab='\r'
+let NERDTreeMinimalUI = 1
+let NERDTreeDirArrows = 1 
+
+" Split Navigation
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
+
+" Enable the list of buffers
+let g:airline#extensions#tabline#enabled = 1
+
+" Show just the filename
+let g:airline#extensions#tabline#fnamemod = ':t'
+
+let g:airline#extensions#branch#enable = 1
+
+" To open a new empty buffer
+" This replaces :tabnew which I used to bind to this mapping
+" nmap <Leader> :enew<CR>
+
+" Move to the next buffer
+nmap <Leader>l :bn<CR>
+
+" Move to the previous buffer
+nmap <Leader>h :bprevious<CR>
+
+" Show all open buffers and their status
+" nmap <leader>bl :ls<CR>
+"
+" Python Config
+let g:loaded_python_provider=0
+let g:python3_host_prog= '/bin/python3'
+
+
+let g:go_fmt_command = "goimports"
+
+let g:tagbar_type_go = {
+	\ 'ctagstype' : 'go',
+	\ 'kinds'     : [
+		\ 'p:package',
+		\ 'i:imports:1',
+		\ 'c:constants',
+		\ 'v:variables',
+		\ 't:types',
+		\ 'n:interfaces',
+		\ 'w:fields',
+		\ 'e:embedded',
+		\ 'm:methods',
+		\ 'r:constructor',
+		\ 'f:functions'
+	\ ],
+	\ 'sro' : '.',
+	\ 'kind2scope' : {
+		\ 't' : 'ctype',
+		\ 'n' : 'ntype'
+	\ },
+	\ 'scope2kind' : {
+		\ 'ctype' : 't',
+		\ 'ntype' : 'n'
+	\ },
+	\ 'ctagsbin'  : 'gotags',
+	\ 'ctagsargs' : '-sort -silent'
+\ }
+
+
+nmap <F8> :TagbarToggle<CR>
+
+" " Minimal GUI Color configs
+" highlight Pmenu ctermbg=white guibg=black gui=bold
+" highlight Pmenu 
+highlight VertSplit cterm=NONE
+
+" Go Config
+let g:go_highlight_variable_declarations = 1
+let g:go_highlight_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_function_calls = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_operators = 1

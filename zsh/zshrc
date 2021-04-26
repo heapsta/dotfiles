@@ -1,0 +1,33 @@
+# Author      : heapsta <heapsta@protonmail.com>
+# Description : Zsh Dotfiles
+
+ZSH_THEME="daveverwer"
+ZSH="$HOME/.oh-my-zsh"
+GIT_TERMINAL_PROMPT=1
+
+alias v="nvim"
+alias vi="nvim"
+alias vim="nvim"
+alias e='emacs -nw'
+alias emacs='emacs -nw'
+alias doom='$HOME/.emacs.d/bin/doom'
+alias ctags='/usr/local/bin/ctags'
+alias zshconfig='nvim $HOME/.zshrc'
+alias zshupdate='source $HOME/.zshrc'
+alias vimconfig='nvim $HOME/.config/nvim/init.vim'
+alias w="cd $HOME/go/src/github.com/heapsta"
+alias tmuxconfig="nvim $HOME/.tmux.conf"
+
+plugins=(git)
+plugins+=(k)
+plugins+=(zsh-autosuggestions)
+plugins+=(zsh-colorls)
+plugins+=(zsh-syntax-highlighting)
+
+export ZSH
+export GIT_TERMINAL_PROMPT
+
+source $ZSH/oh-my-zsh.sh
+source $(dirname $(gem which colorls))/tab_complete.sh
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
